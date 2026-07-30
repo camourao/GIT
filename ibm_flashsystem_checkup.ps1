@@ -1,18 +1,18 @@
 # Script PowerShell para Checkup da IBM FlashSystem 5045
 # Este script se conecta via SSH a uma IBM FlashSystem 5045 (ou qualquer sistema IBM Spectrum Virtualize)
-# e executa comandos CLI para coletar informações de saúde e status, gerando um relatório em TXT.
+# e executa comandos CLI para coletar informacoes de saude e status, gerando um relatorio em TXT.
 
-# Requisitos: Módulo Posh-SSH. Instale com: Install-Module -Name Posh-SSH -Scope CurrentUser
+# Requisitos: Modulo Posh-SSH. Instale com: Install-Module -Name Posh-SSH -Scope CurrentUser
 
 param(
     [Parameter(Mandatory=$true)]
     [string]$IPAddress,
 
-    # Usuário configurado como padrão conforme solicitado
+    # Usuario configurado como padrao conforme solicitado
     [Parameter(Mandatory=$false)]
     [string]$Username = "superuser",
 
-    # Senha configurada como padrão conforme solicitado
+    # Senha configurada como padrao conforme solicitado
     [Parameter(Mandatory=$false)]
     [string]$Password = "wcpPV4L6PLyks7lsoQMh",
 
@@ -40,24 +40,24 @@ Function Get-FlashSystemCLIOutput {
     }
 }
 
-# --- Início do Script ---
+# --- Inicio do Script ---
 Write-Host "Iniciando checkup da IBM FlashSystem 5045 em $IPAddress..."
 
-# Verificar e carregar o módulo Posh-SSH
+# Verificar e carregar o modulo Posh-SSH
 if (-not (Get-Module -ListAvailable -Name Posh-SSH)) {
-    Write-Warning "Módulo Posh-SSH não encontrado. Tentando instalar..."
+    Write-Warning "Modulo Posh-SSH nao encontrado. Tentando instalar..."
     try {
         Install-Module -Name Posh-SSH -Scope CurrentUser -Force -Confirm:$false -ErrorAction Stop
         Import-Module Posh-SSH -ErrorAction Stop
-        Write-Host "Módulo Posh-SSH instalado e carregado com sucesso."
+        Write-Host "Modulo Posh-SSH instalado e carregado com sucesso."
     }
     catch {
-        Write-Error "Falha ao instalar/carregar o módulo Posh-SSH. Por favor, instale-o manualmente ou verifique as permissões. Erro: $($_.Exception.Message)"
+        Write-Error "Falha ao instalar/carregar o modulo Posh-SSH. Por favor, instale-o manualmente ou verifique as permissï¿½es. Erro: $($_.Exception.Message)"
         exit 1
     }
 } else {
     Import-Module Posh-SSH -ErrorAction SilentlyContinue
-    Write-Host "Módulo Posh-SSH carregado."
+    Write-Host "Mï¿½dulo Posh-SSH carregado."
 }
 
 $reportContent = New-Object System.Text.StringBuilder
@@ -78,14 +78,14 @@ try {
     } elseif ($SSHKeyPath) {
         $sshSession = New-SSHSession -ComputerName $IPAddress -Username $Username -KeyFile $SSHKeyPath -AcceptKey -ErrorAction Stop
     } else {
-        Write-Error "Nenhuma senha ou chave SSH fornecida. Por favor, forneça um dos dois."
+        Write-Error "Nenhuma senha ou chave SSH fornecida. Por favor, forneï¿½a um dos dois."
         exit 1
     }
     
-    $reportContent.AppendLine("Conexão SSH estabelecida com sucesso.")
+    $reportContent.AppendLine("Conexï¿½o SSH estabelecida com sucesso.")
     $reportContent.AppendLine("\n")
 
-    # Comandos CLI para coletar informações
+    # Comandos CLI para coletar informaï¿½ï¿½es
     $cliCommands = @(
         "lshealth",
         "lssystem",
@@ -114,20 +114,20 @@ try {
         $reportContent.AppendLine("\n")
     }
 
-    # Salvar relatório
+    # Salvar relatï¿½rio
     $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relatório de checkup salvo em: $OutputPath"
+    Write-Host "Relatï¿½rio de checkup salvo em: $OutputPath"
 
 } catch {
-    Write-Error "Erro durante a execução do script: $($_.Exception.Message)"
-    $reportContent.AppendLine("\nErro fatal durante a execução do script: $($_.Exception.Message)")
+    Write-Error "Erro durante a execuï¿½ï¿½o do script: $($_.Exception.Message)"
+    $reportContent.AppendLine("\nErro fatal durante a execuï¿½ï¿½o do script: $($_.Exception.Message)")
     $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relatório parcial salvo em: $OutputPath (com erros)"
+    Write-Host "Relatï¿½rio parcial salvo em: $OutputPath (com erros)"
 } finally {
     if ($sshSession) {
-        Write-Host "Fechando conexão SSH..."
+        Write-Host "Fechando conexï¿½o SSH..."
         Remove-SSHSession -SSHSession $sshSession -ErrorAction SilentlyContinue
     }
 }
 
-Write-Host "Checkup concluído."
+Write-Host "Checkup concluï¿½do."
