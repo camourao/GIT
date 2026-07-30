@@ -1,9 +1,8 @@
 # Força codificação UTF-8 no console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Localiza a pasta Desktop sincronizada
-$desktopPath = [Environment]::GetFolderPath("Desktop")
-$logPath = Join-Path -Path $desktopPath -ChildPath "logs\veeam"
+# ---------- CAMINHO DE REDE ----------
+$logPath = "\\192.168.100.34\D$\Share\TI\Log´s Veeam"
 
 if (-not (Test-Path -Path $logPath)) {
     New-Item -ItemType Directory -Path $logPath -Force | Out-Null
@@ -85,7 +84,7 @@ $report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credent
 # Exibe o resultado no console
 Write-Host $report
 
-# Grava no arquivo com codificação UTF-8
+# Grava no arquivo com codificação UTF-8 no caminho de rede
 [System.IO.File]::WriteAllText($logFile, $report, [System.Text.Encoding]::UTF8)
 
 # Confirmação na tela
@@ -93,5 +92,5 @@ if (Test-Path -Path $logFile) {
     Write-Host "`n[SUCESSO] Relatorio e volumetria gerados com sucesso!" -ForegroundColor Green
     Write-Host "Arquivo salvo em: $logFile" -ForegroundColor Yellow
 } else {
-    Write-Host "`n[ERRO] Nao foi possivel criar o arquivo." -ForegroundColor Red
+    Write-Host "`n[ERRO] Nao foi possivel criar o arquivo no destino de rede." -ForegroundColor Red
 }
