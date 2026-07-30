@@ -19,8 +19,9 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$SSHKeyPath = "",
 
+    # Caminho de rede com a data dinamica no nome do arquivo (ex: IBM_FlashSystem_Checkup_Report_2026-07-30.txt)
     [Parameter(Mandatory=$false)]
-    [string]$OutputPath = "./IBM_FlashSystem_Checkup_Report.txt"
+    [string]$OutputPath = "\\192.168.100.34\D$\Share\TI\Logs Storage IBM\IBM_FlashSystem_Checkup_Report_$(Get-Date -Format 'yyyy-MM-dd').txt"
 )
 
 Function Get-FlashSystemCLIOutput {
@@ -52,12 +53,12 @@ if (-not (Get-Module -ListAvailable -Name Posh-SSH)) {
         Write-Host "Modulo Posh-SSH instalado e carregado com sucesso."
     }
     catch {
-        Write-Error "Falha ao instalar/carregar o modulo Posh-SSH. Por favor, instale-o manualmente ou verifique as permiss�es. Erro: $($_.Exception.Message)"
+        Write-Error "Falha ao instalar/carregar o modulo Posh-SSH. Por favor, instale-o manualmente ou verifique as permissoes. Erro: $($_.Exception.Message)"
         exit 1
     }
 } else {
     Import-Module Posh-SSH -ErrorAction SilentlyContinue
-    Write-Host "M�dulo Posh-SSH carregado."
+    Write-Host "Modulo Posh-SSH carregado."
 }
 
 $reportContent = New-Object System.Text.StringBuilder
@@ -78,14 +79,14 @@ try {
     } elseif ($SSHKeyPath) {
         $sshSession = New-SSHSession -ComputerName $IPAddress -Username $Username -KeyFile $SSHKeyPath -AcceptKey -ErrorAction Stop
     } else {
-        Write-Error "Nenhuma senha ou chave SSH fornecida. Por favor, forne�a um dos dois."
+        Write-Error "Nenhuma senha ou chave SSH fornecida. Por favor, forneca um dos dois."
         exit 1
     }
     
-    $reportContent.AppendLine("Conex�o SSH estabelecida com sucesso.")
+    $reportContent.AppendLine("Conexao SSH estabelecida com sucesso.")
     $reportContent.AppendLine("\n")
 
-    # Comandos CLI para coletar informa��es
+    # Comandos CLI para coletar informacoes
     $cliCommands = @(
         "lshealth",
         "lssystem",
@@ -114,20 +115,26 @@ try {
         $reportContent.AppendLine("\n")
     }
 
-    # Salvar relat�rio
+    # Garantir que o diretorio de destino existe antes de salvar
+    $targetDir = Split-Path -Path $OutputPath -Parent
+    if (-not (Test-Path -Path $targetDir)) {
+        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+    }
+
+    # Salvar relatorio
     $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relat�rio de checkup salvo em: $OutputPath"
+    Write-Host "Relatorio de checkup salvo em: $OutputPath"
 
 } catch {
-    Write-Error "Erro durante a execu��o do script: $($_.Exception.Message)"
-    $reportContent.AppendLine("\nErro fatal durante a execu��o do script: $($_.Exception.Message)")
+    Write-Error "Erro durante a execucao do script: $($_.Exception.Message)"
+    $reportContent.AppendLine("\nErro fatal durante a execucao do script: $($_.Exception.Message)")
     $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relat�rio parcial salvo em: $OutputPath (com erros)"
+    Write-Host "Relatorio parcial salvo em: $OutputPath (com erros)"
 } finally {
     if ($sshSession) {
-        Write-Host "Fechando conex�o SSH..."
+        Write-Host "Fechando conexao SSH..."
         Remove-SSHSession -SSHSession $sshSession -ErrorAction SilentlyContinue
     }
 }
 
-Write-Host "Checkup conclu�do."
+Write-Host "Checkup concluido."
