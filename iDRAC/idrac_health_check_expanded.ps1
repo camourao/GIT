@@ -9,7 +9,7 @@ $BasePath = "C:\git\iDRAC"
 $CsvFile  = "$BasePath\idrac_list.csv"
 
 # Mapeamento para o caminho de rede UNC
-$LogPath  = "\\192.168.100.34\D$\Share\TI\Log´s Idrac"
+$LogPath  = "\\192.168.100.34\Share\TI\Logs Idrac"
 $LogFile  = "$LogPath\idrac_full_$(Get-Date -Format yyyyMMdd).txt"
 
 # ---------- PREPARO ----------
