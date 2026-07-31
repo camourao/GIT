@@ -12,7 +12,7 @@ $sshPort    = 22
 $logRemote  = "/var/log/auth.log"
 
 # Definindo o diretório de rede
-$outputDir  = "\\192.168.100.34\D$\Share\TI\Logs VPN"
+$outputDir  = "\\192.168.100.34\Share\TI\Logs VPN"
 
 # Gera a data do dia para compor o nome do arquivo (ex: openvpn_auth_logs_2026-07-30.txt)
 $dateStamp  = Get-Date -Format "yyyy-MM-dd"
