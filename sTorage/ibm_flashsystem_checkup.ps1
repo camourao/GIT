@@ -19,7 +19,7 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$SSHKeyPath = "",
 
-    # Caminho de rede com a data dinamica no nome do arquivo (ex: IBM_FlashSystem_Checkup_Report_2026-07-30.txt)
+    # Caminho de rede com a data dinamica no nome do arquivo (ex: IBM_FlashSystem_Checkup_Report_2026-07-31.txt)
     [Parameter(Mandatory=$false)]
     [string]$OutputPath = "\\192.168.100.34\D$\Share\TI\Logs Storage IBM\IBM_FlashSystem_Checkup_Report_$(Get-Date -Format 'yyyy-MM-dd').txt"
 )
@@ -33,11 +33,34 @@ Function Get-FlashSystemCLIOutput {
     Write-Host "Executando comando: $Command"
     try {
         $result = Invoke-SSHCommand -SSHSession $SSHSession -Command $Command -ErrorAction Stop
-        return $result.Output
+        return ($result.Output -join "`n")
     }
     catch {
         Write-Warning "Erro ao executar '$Command': $($_.Exception.Message)"
         return "Erro ao executar comando: $($_.Exception.Message)"
+    }
+}
+
+Function Salvar-RelatorioNoDisco {
+    param(
+        [string]$Conteudo,
+        [string]$CaminhoAlvo
+    )
+    try {
+        $targetDir = Split-Path -Path $CaminhoAlvo -Parent
+        if ($targetDir -and -not (Test-Path -Path $targetDir)) {
+            New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
+        }
+        $Conteudo | Out-File -FilePath $CaminhoAlvo -Encoding UTF8 -Force
+        Write-Host "Relatorio salvo em: $CaminhoAlvo"
+    }
+    catch {
+        Write-Warning "Nao foi possivel salvar no caminho '$CaminhoAlvo': $($_.Exception.Message)"
+        # Fallback local se o caminho de rede falhar por falta de permissao (Share/D$)
+        $localFallback = Join-Path $PSScriptRoot "IBM_FlashSystem_Checkup_Report_$(Get-Date -Format 'yyyy-MM-dd').txt"
+        Write-Host "Tentando salvar copia local em: $localFallback..."
+        $Conteudo | Out-File -FilePath $localFallback -Encoding UTF8 -Force
+        Write-Host "Relatorio salvo com sucesso no fallback local!"
     }
 }
 
@@ -62,12 +85,12 @@ if (-not (Get-Module -ListAvailable -Name Posh-SSH)) {
 }
 
 $reportContent = New-Object System.Text.StringBuilder
-$reportContent.AppendLine("IBM FlashSystem 5045 Health Check Report - Cluster_STG-IBM")
-$reportContent.AppendLine("Data e Hora: $(Get-Date)")
-$reportContent.AppendLine("IP do Sistema (Gerenciamento): $IPAddress")
-$reportContent.AppendLine("IP do Node 1: 192.168.100.91")
-$reportContent.AppendLine("IP do Node 2: 192.168.100.92")
-$reportContent.AppendLine("===================================================")
+[void]$reportContent.AppendLine("IBM FlashSystem 5045 Health Check Report - Cluster_STG-IBM")
+[void]$reportContent.AppendLine("Data e Hora: $(Get-Date)")
+[void]$reportContent.AppendLine("IP do Sistema (Gerenciamento): $IPAddress")
+[void]$reportContent.AppendLine("IP do Node 1: 192.168.100.91")
+[void]$reportContent.AppendLine("IP do Node 2: 192.168.100.92")
+[void]$reportContent.AppendLine("===================================================")
 
 $sshSession = $null
 try {
@@ -83,8 +106,8 @@ try {
         exit 1
     }
     
-    $reportContent.AppendLine("Conexao SSH estabelecida com sucesso.")
-    $reportContent.AppendLine("\n")
+    [void]$reportContent.AppendLine("Conexao SSH estabelecida com sucesso.")
+    [void]$reportContent.AppendLine("")
 
     # Comandos CLI para coletar informacoes
     $cliCommands = @(
@@ -109,32 +132,22 @@ try {
     )
 
     foreach ($cmd in $cliCommands) {
-        $reportContent.AppendLine("--- Output de '$cmd' ---")
+        [void]$reportContent.AppendLine("--- Output de '$cmd' ---")
         $output = Get-FlashSystemCLIOutput -SSHSession $sshSession -Command $cmd
-        $reportContent.AppendLine($output)
-        $reportContent.AppendLine("\n")
+        [void]$reportContent.AppendLine($output)
+        [void]$reportContent.AppendLine("")
     }
-
-    # Garantir que o diretorio de destino existe antes de salvar
-    $targetDir = Split-Path -Path $OutputPath -Parent
-    if (-not (Test-Path -Path $targetDir)) {
-        New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
-    }
-
-    # Salvar relatorio
-    $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relatorio de checkup salvo em: $OutputPath"
 
 } catch {
     Write-Error "Erro durante a execucao do script: $($_.Exception.Message)"
-    $reportContent.AppendLine("\nErro fatal durante a execucao do script: $($_.Exception.Message)")
-    $reportContent.ToString() | Out-File -FilePath $OutputPath -Encoding UTF8
-    Write-Host "Relatorio parcial salvo em: $OutputPath (com erros)"
+    [void]$reportContent.AppendLine("`nErro fatal durante a execucao do script: $($_.Exception.Message)")
 } finally {
     if ($sshSession) {
         Write-Host "Fechando conexao SSH..."
-        Remove-SSHSession -SSHSession $sshSession -ErrorAction SilentlyContinue
+        Remove-SSHSession -SSHSession $sshSession -ErrorAction SilentlyContinue | Out-Null
     }
+    # Salva o relatorio de forma segura
+    Salvar-RelatorioNoDisco -Conteudo $reportContent.ToString() -CaminhoAlvo $OutputPath
 }
 
 Write-Host "Checkup concluido."
