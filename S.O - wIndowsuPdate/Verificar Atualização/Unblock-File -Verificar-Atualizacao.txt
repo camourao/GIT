@@ -1,0 +1,19 @@
+Unblock-File -Path .\Verificar-AtualizacoesPendentes.ps1
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+.\Verificar-AtualizacoesPendentes.ps1
+
+
+
+# 1. Permite o envio de credenciais não criptografadas/básicas via cliente WinRM local
+Set-Item WSMan:\localhost\Client\AllowUnencrypted -Value $true -Force
+
+# 2. Garante que autenticação do tipo "Basic" e "Negotiate" estejam ativas
+Set-Item WSMan:\localhost\Client\Auth\Basic -Value $true -Force
+Set-Item WSMan:\localhost\Client\Auth\Negotiate -Value $true -Force
+
+
+# Execute chamando as credenciais explicitamente
+$cred = Get-Credential
+
+# Agora chame o script passando o parâmetro (lembre-se de usar "dominio\usuario" na caixinha que vai abrir!)
+.\Verificar-AtualizacoesPendentes.ps1 -Credential $cred

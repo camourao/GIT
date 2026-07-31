@@ -1,0 +1,3 @@
+Unblock-File -Path .\Atualizar-WindowsServer.ps1
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+.\Atualizar-WindowsServer.ps1

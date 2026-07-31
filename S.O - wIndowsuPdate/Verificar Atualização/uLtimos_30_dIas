@@ -1,0 +1,97 @@
+<#
+.SINOPSE
+    Lista as atualizações de software e segurança instaladas no Windows Server 2019 
+    nos últimos 30 dias e gera um relatório.
+
+.USO
+    .\Obter-HistoricoAtualizacoes.ps1
+    .\Obter-HistoricoAtualizacoes.ps1 -Dias 15
+#>
+
+param(
+    [int]$Dias = 30,
+    [string]$CaminhoRelatorio = "C:\script_update\logs\Relatorio_Atualizacoes_30Dias.txt"
+)
+
+$ErrorActionPreference = "Stop"
+$DataLimite = (Get-Date).AddDays(-$Dias)
+
+Write-Host "==================================================================" -ForegroundColor Cyan
+Write-Host " Consultando atualizações instaladas nos últimos $Dias dias... " -ForegroundColor Cyan
+Write-Host " Data limite: $($DataLimite.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Cyan
+Write-Host "==================================================================" -ForegroundColor Cyan
+
+# ---------------------------------------------------------------------------
+# 1. Preparar diretório do relatório
+# ---------------------------------------------------------------------------
+$PastaRelatorio = Split-Path -Path $CaminhoRelatorio -Parent
+if (-not (Test-Path $PastaRelatorio)) {
+    New-Item -Path $PastaRelatorio -ItemType Directory -Force | Out-Null
+}
+
+try {
+    # ---------------------------------------------------------------------------
+    # 2. Consultar o histórico oficial da API do Windows Update
+    # ---------------------------------------------------------------------------
+    $Session = New-Object -ComObject Microsoft.Update.Session
+    $Searcher = $Session.CreateUpdateSearcher()
+    
+    # Obtém a contagem total do histórico de atualizações no SO
+    $TotalHistory = $Searcher.GetTotalHistoryCount()
+    
+    if ($TotalHistory -eq 0) {
+        Write-Host "`nNenhum histórico de atualização encontrado neste servidor." -ForegroundColor Yellow
+        return
+    }
+
+    # Busca todo o histórico registrado
+    $HistoricoBruto = $Searcher.QueryHistory(0, $TotalHistory)
+
+    # ---------------------------------------------------------------------------
+    # 3. Filtrar pelos últimos X dias e selecionar dados relevantes
+    # ---------------------------------------------------------------------------
+    $AtualizacoesRecentes = $HistoricoBruto | Where-Object { 
+        $_.Date -ge $DataLimite -and $_.ResultCode -eq 2 # ResultCode 2 = Succeeded (Sucesso)
+    } | ForEach-Object {
+        
+        # Extrai o número do KB do Título
+        $KB = "N/A"
+        if ($_.Title -match "KB(\d+)") {
+            $KB = "KB" + $Matches[1]
+        }
+
+        [PSCustomObject]@{
+            DataInstalacao = $_.Date.ToString("yyyy-MM-dd HH:mm:ss")
+            KB             = $KB
+            Operacao       = switch ($_.Operation) { 1 { "Instalação" }; 2 { "Desinstalação" }; default { "Outro" } }
+            Titulo         = $_.Title
+        }
+    } | Sort-Object DataInstalacao -Descending
+
+    # ---------------------------------------------------------------------------
+    # 4. Exibir e Salvar Resultados
+    # ---------------------------------------------------------------------------
+    if ($AtualizacoesRecentes) {
+        Write-Host "`nEncontradas $($AtualizacoesRecentes.Count) atualização(ões) no período:`n" -ForegroundColor Green
+        
+        # Exibe na tela em tabela formatada
+        $AtualizacoesRecentes | Format-Table -Property DataInstalacao, KB, Operacao, Titulo -AutoSize
+
+        # Salva o relatório no arquivo texto
+        $Cabecalho = "RELATÓRIO DE ATUALIZAÇÕES INSTALADAS (ÚLTIMOS $Dias DIAS)`nGerado em: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')`nServidor: $env:COMPUTERNAME`n" + ("=" * 80)
+        
+        $LinhasRelatorio = $AtualizacoesRecentes | Out-String
+        
+        "$Cabecalho`n$LinhasRelatorio" | Out-File -FilePath $CaminhoRelatorio -Encoding UTF8 -Force
+        
+        Write-Host "Relatório gerado com sucesso em: $CaminhoRelatorio" -ForegroundColor Cyan
+    }
+    else {
+        Write-Host "`nNenhuma atualização foi instalada nos últimos $Dias dias." -ForegroundColor Yellow
+        "Nenhuma atualização instalada nos últimos $Dias dias (a partir de $($DataLimite.ToString('yyyy-MM-dd')))." | Out-File -FilePath $CaminhoRelatorio -Encoding UTF8 -Force
+    }
+
+}
+catch {
+    Write-Host "`nERRO ao consultar histórico do Windows Update: $($_.Exception.Message)" -ForegroundColor Red
+}

@@ -1,0 +1,3 @@
+Unblock-File -Path .\Verificar-AtualizacoesPendentes.ps1
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+.\Verificar-AtualizacoesPendentes.ps1
