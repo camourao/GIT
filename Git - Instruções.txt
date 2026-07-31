@@ -1,0 +1,13 @@
+Git - Instruções
+
+#Para salvar script modificado
+git add +o nome do script.ps1
+
+#Faça o Commit com a mensagem - Registra a nova versão no histórico
+git commit -m "Corrige acentuacao e codificacao do script"
+
+#Enviar o script para a nuvem
+git push
+
+#Grava o caminho do servidor destino padrão
+git push -u origin main 
