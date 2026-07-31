@@ -1,8 +1,9 @@
 # Força codificação UTF-8 no console
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# ---------- CAMINHO DE REDE ----------
-$logPath = "\\192.168.100.34\D$\Share\TI\Log´s Veeam"
+# Mapeamento para o caminho de rede UNC
+$LogPath  = "\\192.168.100.34\Share\TI\Logs Veeam"
+$LogFile  = "$LogPath\idrac_full_$(Get-Date -Format yyyyMMdd).txt"
 
 if (-not (Test-Path -Path $logPath)) {
     New-Item -ItemType Directory -Path $logPath -Force | Out-Null
