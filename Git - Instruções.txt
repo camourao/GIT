@@ -11,3 +11,15 @@ git push
 
 #Grava o caminho do servidor destino padrão
 git push -u origin main 
+
+#Alterar a mensagem motivo do commit
+git commit --amend -m "Sua nova mensagem organizada aqui"
+
+#Alterar as ultimas 5 mensagens do motivo do commit
+git rebase -i HEAD~5
+
+No editor que abrir no terminal, encontre a linha do commit que quer alterar, mude a palavra pick no início da linha para reword (ou apenas r), salve e feche.
+
+O Git abrirá uma tela para você reescrever a mensagem daquele commit.
+
+git push --force-with-lease
