@@ -5,8 +5,9 @@
 # Requisitos: Modulo Posh-SSH. Instale com: Install-Module -Name Posh-SSH -Scope CurrentUser
 
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$IPAddress,
+    # IP configurado como padrao
+    [Parameter(Mandatory=$false)]
+    [string]$IPAddress = "192.168.100.90",
 
     # Usuario configurado como padrao conforme solicitado
     [Parameter(Mandatory=$false)]
@@ -19,7 +20,14 @@ param(
     [Parameter(Mandatory=$false)]
     [string]$SSHKeyPath = "",
 
-    # Caminho de rede com a data dinamica no nome do arquivo (ex: IBM_FlashSystem_Checkup_Report_2026-07-31.txt)
+    # Credenciais para autenticacao no Compartilhamento de Rede (Formato UPN ajustado para evitar erros de login)
+    [Parameter(Mandatory=$false)]
+    [string]$ShareUsername = "services_ti@crn3.org.br",
+
+    [Parameter(Mandatory=$false)]
+    [string]$SharePassword = "mudar@123",
+
+    # Caminho de rede
     [Parameter(Mandatory=$false)]
     [string]$OutputPath = "\\192.168.100.34\Share\TI\Logs Storage IBM\IBM_FlashSystem_Checkup_Report_$(Get-Date -Format 'yyyy-MM-dd').txt"
 )
@@ -44,9 +52,30 @@ Function Get-FlashSystemCLIOutput {
 Function Salvar-RelatorioNoDisco {
     param(
         [string]$Conteudo,
-        [string]$CaminhoAlvo
+        [string]$CaminhoAlvo,
+        [string]$ShareUser,
+        [string]$SharePass
     )
     try {
+        # Se for caminho de rede UNC, realiza autenticacao via New-SmbMapping
+        if ($CaminhoAlvo.StartsWith("\\") -and $ShareUser) {
+            Write-Host "Autenticando no compartilhamento de rede..."
+            
+            # Extrai o caminho base do recurso (ex: \\192.168.100.34\Share)
+            $parts = $CaminhoAlvo.Split('\')
+            $uncServerShare = "\\$($parts[2])\$($parts[3])"
+
+            # Removes mapeamentos/sessoes anteriores para evitar conflitos de credencial
+            Remove-SmbMapping -RemotePath $uncServerShare -Force -ErrorAction SilentlyContinue
+
+            # Converte a senha para SecureString tratando caracteres especiais
+            $secPassword = ConvertTo-SecureString $SharePass -AsPlainText -Force
+            $cred = New-Object System.Management.Automation.PSCredential($ShareUser, $secPassword)
+
+            # Mapeia/autentica o recurso de rede com as credenciais
+            New-SmbMapping -RemotePath $uncServerShare -Credential $cred -ErrorAction Stop | Out-Null
+        }
+
         $targetDir = Split-Path -Path $CaminhoAlvo -Parent
         if ($targetDir -and -not (Test-Path -Path $targetDir)) {
             New-Item -ItemType Directory -Path $targetDir -Force | Out-Null
@@ -56,7 +85,7 @@ Function Salvar-RelatorioNoDisco {
     }
     catch {
         Write-Warning "Nao foi possivel salvar no caminho '$CaminhoAlvo': $($_.Exception.Message)"
-        # Fallback local se o caminho de rede falhar por falta de permissao (Share/D$)
+        # Fallback local se o caminho de rede falhar
         $localFallback = Join-Path $PSScriptRoot "IBM_FlashSystem_Checkup_Report_$(Get-Date -Format 'yyyy-MM-dd').txt"
         Write-Host "Tentando salvar copia local em: $localFallback..."
         $Conteudo | Out-File -FilePath $localFallback -Encoding UTF8 -Force
@@ -146,8 +175,8 @@ try {
         Write-Host "Fechando conexao SSH..."
         Remove-SSHSession -SSHSession $sshSession -ErrorAction SilentlyContinue | Out-Null
     }
-    # Salva o relatorio de forma segura
-    Salvar-RelatorioNoDisco -Conteudo $reportContent.ToString() -CaminhoAlvo $OutputPath
+    # Salva o relatorio informando as credenciais de rede
+    Salvar-RelatorioNoDisco -Conteudo $reportContent.ToString() -CaminhoAlvo $OutputPath -ShareUser $ShareUsername -SharePass $SharePassword
 }
 
 Write-Host "Checkup concluido."

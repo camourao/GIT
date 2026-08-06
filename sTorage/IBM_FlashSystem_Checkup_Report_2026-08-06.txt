@@ -1,0 +1,727 @@
+﻿IBM FlashSystem 5045 Health Check Report - Cluster_STG-IBM
+Data e Hora: 08/06/2026 12:22:48
+IP do Sistema (Gerenciamento): 192.168.100.90
+IP do Node 1: 192.168.100.91
+IP do Node 2: 192.168.100.92
+===================================================
+Conexao SSH estabelecida com sucesso.
+
+--- Output de 'lshealth' ---
+
+
+--- Output de 'lssystem' ---
+id 000000E020420EDA
+name Cluster_STG-IBM
+location local
+partnership 
+total_mdisk_capacity 49.4TB
+space_in_mdisk_grps 49.4TB
+space_allocated_to_vdisks 13.58TB
+total_free_space 35.8TB
+total_vdiskcopy_capacity 58.40TB
+total_used_capacity 13.48TB
+total_overallocation 118
+total_vdisk_capacity 58.40TB
+total_allocated_extent_capacity 13.59TB
+statistics_status on
+statistics_frequency 5
+cluster_locale en_US
+time_zone 56 America/Araguaina
+code_level 9.1.0.6 (build 187.31.2606031101000)
+console_IP 192.168.100.90:443
+id_alias 000000E020420EDA
+gm_link_tolerance 300
+gm_inter_cluster_delay_simulation 0
+gm_intra_cluster_delay_simulation 0
+gm_max_host_delay 5
+email_reply suporte_ti@crn3.org.br
+email_contact Marcos Morais
+email_contact_primary (11) 3474-6163
+email_contact_alternate 
+email_contact_location 3a Torre Sul - Cond. Mario Granero
+email_contact2 
+email_contact2_primary 
+email_contact2_alternate 
+email_state running
+inventory_mail_interval 1
+cluster_ntp_IP_address 
+cluster_isns_IP_address 
+iscsi_auth_method none
+iscsi_chap_secret 
+auth_service_configured no
+auth_service_enabled no
+auth_service_url 
+auth_service_user_name 
+auth_service_pwd_set no
+auth_service_cert_set no
+auth_service_type ldap
+relationship_bandwidth_limit 25
+tier tier_scm
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier0_flash
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier1_flash
+tier_capacity 17.29TB
+tier_free_capacity 15.14TB
+tier tier_enterprise
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier_nearline
+tier_capacity 32.09TB
+tier_free_capacity 20.65TB
+easy_tier_acceleration off
+has_nas_key no
+layer storage
+rc_buffer_size 256
+compression_active no
+compression_virtual_capacity 0.00MB
+compression_compressed_capacity 0.00MB
+compression_uncompressed_capacity 0.00MB
+cache_prefetch on
+email_organization CRN3
+email_machine_address Av. Brig. Faria Lima, 1461
+email_machine_city Sao Paulo
+email_machine_state SP
+email_machine_zip 01452002
+email_machine_country BR
+email_from 
+total_drive_raw_capacity 92.97TB
+compression_destage_mode off
+local_fc_port_mask 1111111111111111111111111111111111111111111111111111111111111111
+partner_fc_port_mask 1111111111111111111111111111111111111111111111111111111111111111
+high_temp_mode off
+topology standard
+topology_status 
+rc_auth_method none
+vdisk_protection_time 15
+vdisk_protection_enabled yes
+product_name IBM Storage FlashSystem 5045
+odx off
+max_replication_delay 0
+partnership_exclusion_threshold 315
+gen1_compatibility_mode_enabled 
+ibm_customer 
+ibm_component 
+ibm_country 
+tier_scm_compressed_data_used 0.00MB
+tier0_flash_compressed_data_used 0.00MB
+tier1_flash_compressed_data_used 0.00MB
+tier_enterprise_compressed_data_used 0.00MB
+tier_nearline_compressed_data_used 0.00MB
+total_reclaimable_capacity 0.00MB
+physical_capacity 49.38TB
+physical_free_capacity 35.79TB
+used_capacity_before_reduction 0.00MB
+used_capacity_after_reduction 0.00MB
+overhead_capacity 0.00MB
+deduplication_capacity_saving 0.00MB
+enhanced_callhome on
+censor_callhome off
+host_unmap off
+backend_unmap on
+quorum_mode standard
+quorum_site_id 
+quorum_site_name 
+quorum_lease short
+automatic_vdisk_analysis_enabled on
+callhome_accepted_usage no
+safeguarded_copy_suspended no
+protection_provisioned_capacity 42.35TB
+protection_written_capacity 573.66GB
+flashcopy_gui_enabled no
+snapshot_policy_suspended no
+snapshot_preserve_parent no
+anomaly_detection off
+anomaly_detection_event off
+flashcopy_default_grainsize 256
+storage_insights_control_access no
+auto_drive_download off
+grid_system_uuid 
+grid_uuid 
+grid_name 
+grid_owner_uuid 
+
+--- Output de 'lsnode' ---
+
+
+--- Output de 'lsdrive' ---
+id status error_sequence_number use    tech_type     capacity mdisk_id mdisk_name member_id enclosure_id slot_id node_id node_name auto_manage drive_class_id 
+0  online                       member tier1_flash   3.5TB    0        MDisk1     0         1            5                         inactive    0              
+1  online                       member tier1_flash   3.5TB    0        MDisk1     1         1            3                         inactive    0              
+2  online                       member tier1_flash   3.5TB    0        MDisk1     2         1            2                         inactive    0              
+3  online                       member tier1_flash   3.5TB    0        MDisk1     3         1            7                         inactive    0              
+4  online                       member tier1_flash   3.5TB    0        MDisk1     4         1            1                         inactive    0              
+5  online                       member tier1_flash   3.5TB    0        MDisk1     5         1            4                         inactive    0              
+6  online                       member tier1_flash   3.5TB    0        MDisk1     6         1            6                         inactive    0              
+7  online                       member tier1_flash   3.5TB    0        MDisk1     7         1            8                         inactive    0              
+8  online                       member tier_nearline 10.8TB   16       MDisk2     0         2            1                         inactive    1              
+9  online                       member tier_nearline 10.8TB   16       MDisk2     1         2            5                         inactive    1              
+10 online                       member tier_nearline 10.8TB   16       MDisk2     2         2            4                         inactive    1              
+11 online                       member tier_nearline 10.8TB   16       MDisk2     3         2            3                         inactive    1              
+12 online                       member tier_nearline 10.8TB   16       MDisk2     4         2            6                         inactive    1              
+13 online                       member tier_nearline 10.8TB   16       MDisk2     5         2            2                         inactive    1              
+
+--- Output de 'lsmdiskgrp' ---
+id name  status mdisk_count vdisk_count capacity extent_size free_capacity virtual_capacity used_capacity real_capacity overallocation warning easy_tier easy_tier_status compression_active compression_virtual_capacity compression_compressed_capacity compression_uncompressed_capacity parent_mdisk_grp_id parent_mdisk_grp_name child_mdisk_grp_count child_mdisk_grp_capacity type   encrypt owner_type owner_id owner_name site_id site_name data_reduction used_capacity_before_reduction used_capacity_after_reduction overhead_capacity deduplication_capacity_saving reclaimable_capacity easy_tier_fcm_over_allocation_max provisioning_policy_id provisioning_policy_name replication_pool_link_uid 
+0  Pool0 online 1           8           17.29TB  1024        15.14TB       24.40TB          2.09TB        2.14TB        141            80      auto      balanced         no                 0.00MB                       0.00MB                          0.00MB                            0                   Pool0                 0                     0.00MB                   parent no      none                                             no             0.00MB                         0.00MB                        0.00MB            0.00MB                        0.00MB               100%                                                                              58AAAF832D6C5F8550ED47336D960EA5 
+1  Pool1 online 1           10          32.09TB  1024        20.65TB       34.00TB          11.39TB       11.44TB       105            80      auto      balanced         no                 0.00MB                       0.00MB                          0.00MB                            1                   Pool1                 0                     0.00MB                   parent no      none                                             no             0.00MB                         0.00MB                        0.00MB            0.00MB                        0.00MB               100%                                                                              5A1FAC16FF9E5B9E5860E5EC6D48BBE6 
+
+--- Output de 'lsvdisk' ---
+id name       IO_group_id IO_group_name status mdisk_grp_id mdisk_grp_name capacity type    FC_id FC_name RC_id RC_name vdisk_UID                        fc_map_count copy_count fast_write_state se_copy_count RC_change compressed_copy_count parent_mdisk_grp_id parent_mdisk_grp_name owner_id owner_name formatting encrypt volume_id volume_name function volume_group_id volume_group_name protocol is_snapshot snapshot_count volume_type replication_mode is_safeguarded_snapshot safeguarded_snapshot_count restore_in_progress 
+0  VOL0       0           io_grp0       online 0            Pool0          3.05TB   striped                             600507638081083B6800000000000000 0            1          not_empty        1             no        0                     0                   Pool0                                     no         no      0         VOL0                 0               VG_Vol            scsi     no          7                                           no                      0                          no                  
+1  QUORUM     0           io_grp0       online 1            Pool1          1.00GB   striped                             600507638081083B6800000000000001 0            1          not_empty        1             no        0                     1                   Pool1                                     no         no      1         QUORUM                                                 scsi     no          0                                           no                      0                          no                  
+2  VOL-BACKUP 0           io_grp0       online 1            Pool1          10.00TB  striped                             600507638081083B680000000000000C 0            1          not_empty        1             no        0                     1                   Pool1                                     no         no      2         VOL-BACKUP                                             scsi     no          0                                           no                      0                          no                  
+3  VOL2       0           io_grp0       online 1            Pool1          3.00TB   striped                             600507638081083B6800000000000006 0            1          not_empty        1             no        0                     1                   Pool1                                     no         no      3         VOL2                 0               VG_Vol            scsi     no          7                                           no                      0                          no                  
+
+--- Output de 'lseventlog -sev error -fixed 10' ---
+
+
+--- Output de 'lseventlog -sev warning -fixed 10' ---
+
+
+--- Output de 'lsportfc' ---
+id fc_io_port_id port_id type port_speed node_id node_name WWPN             nportid status attachment cluster_use   adapter_location adapter_port_id 
+0  1             1       fc   16Gb       1       node1     500507680D06D962 DA0100  active host       local_partner 1                1               
+1  2             2       fc   16Gb       1       node1     500507680D0AD962 DA0100  active host       local_partner 1                2               
+2  3             3       fc   16Gb       1       node1     500507680D0ED962 DA0100  active host       local_partner 1                3               
+3  4             4       fc   16Gb       1       node1     500507680D12D962 DA0100  active host       local_partner 1                4               
+16 1             1       fc   16Gb       2       node2     500507680D06D963 DA0100  active host       local_partner 1                1               
+17 2             2       fc   16Gb       2       node2     500507680D0AD963 DA0100  active host       local_partner 1                2               
+18 3             3       fc   16Gb       2       node2     500507680D0ED963 DA0100  active host       local_partner 1                3               
+19 4             4       fc   16Gb       2       node2     500507680D12D963 DA0100  active host       local_partner 1                4               
+
+--- Output de 'lsportethernet' ---
+port_id node_id node_name MAC               duplex speed link_state dcbx_state  rdma_type adapter_location adapter_port_id host storage replication eth_clustering management 
+1       1       node1     98:be:94:30:4f:17 Full   1Gb/s active     unsupported           0                1               yes  yes     yes         no             yes        
+2       1       node1     98:be:94:30:4f:18              inactive                         0                2               yes  yes     yes         no             yes        
+1       2       node2     98:be:94:30:51:ea Full   1Gb/s active     unsupported           0                1               yes  yes     yes         no             yes        
+2       2       node2     98:be:94:30:51:eb              inactive                         0                2               yes  yes     yes         no             yes        
+
+--- Output de 'lsfirmware' ---
+
+
+--- Output de 'lshost' ---
+id name            port_count iogrp_count status site_id site_name host_cluster_id host_cluster_name protocol owner_id owner_name portset_id portset_name partition_id partition_name draft_partition_id draft_partition_name ungrouped_volume_mapping location_system_name 
+0  SERVER-CRN-HV01 2          2           online                   0               CLUSTER-HYPERV    scsi                         64         portset64                                                                        yes                                           
+1  SERVER-CRN-HV02 2          2           online                   0               CLUSTER-HYPERV    scsi                         64         portset64                                                                        yes                                           
+2  SERVER-CRN-HV03 2          2           online                   0               CLUSTER-HYPERV    scsi                         64         portset64                                                                        yes                                           
+3  SERVER-CRN-HV04 2          2           online                   0               CLUSTER-HYPERV    scsi                         64         portset64                                                                        yes                                           
+4  SERVER-CRN-BKP  2          1           online                                                     scsi                         64         portset64                                                                        yes                                           
+
+--- Output de 'lsmdiskgrp Pool0' ---
+id 0
+name Pool0
+status online
+mdisk_count 1
+vdisk_count 8
+capacity 17.29TB
+extent_size 1024
+free_capacity 15.14TB
+virtual_capacity 24.40TB
+used_capacity 2.09TB
+real_capacity 2.14TB
+overallocation 141
+warning 80
+easy_tier auto
+easy_tier_status balanced
+tier tier_scm
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier0_flash
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier1_flash
+tier_mdisk_count 1
+tier_capacity 17.29TB
+tier_free_capacity 15.14TB
+tier tier_enterprise
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier_nearline
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+compression_active no
+compression_virtual_capacity 0.00MB
+compression_compressed_capacity 0.00MB
+compression_uncompressed_capacity 0.00MB
+site_id 
+site_name 
+parent_mdisk_grp_id 0
+parent_mdisk_grp_name Pool0
+child_mdisk_grp_count 0
+child_mdisk_grp_capacity 0.00MB
+type parent
+encrypt no
+owner_type none
+owner_id 
+owner_name 
+data_reduction no
+used_capacity_before_reduction 0.00MB
+used_capacity_after_reduction 0.00MB
+overhead_capacity 0.00MB
+deduplication_capacity_saving 0.00MB
+reclaimable_capacity 0.00MB
+physical_capacity 17.29TB
+physical_free_capacity 15.14TB
+shared_resources no
+vdisk_protection_enabled yes
+vdisk_protection_status active
+easy_tier_fcm_over_allocation_max 100%
+auto_expand no
+auto_expand_max_capacity 0.00MB
+safeguarded no
+provisioning_policy_id 
+provisioning_policy_name 
+replication_pool_link_uid 58AAAF832D6C5F8550ED47336D960EA5
+protection_vdisk_count 7
+protection_provisioned_capacity 21.35TB
+protection_written_capacity 568.43GB
+format_required no
+
+--- Output de 'lsmdiskgrp Pool1' ---
+id 1
+name Pool1
+status online
+mdisk_count 1
+vdisk_count 10
+capacity 32.09TB
+extent_size 1024
+free_capacity 20.65TB
+virtual_capacity 34.00TB
+used_capacity 11.39TB
+real_capacity 11.44TB
+overallocation 105
+warning 80
+easy_tier auto
+easy_tier_status balanced
+tier tier_scm
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier0_flash
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier1_flash
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier_enterprise
+tier_mdisk_count 0
+tier_capacity 0.00MB
+tier_free_capacity 0.00MB
+tier tier_nearline
+tier_mdisk_count 1
+tier_capacity 32.09TB
+tier_free_capacity 20.65TB
+compression_active no
+compression_virtual_capacity 0.00MB
+compression_compressed_capacity 0.00MB
+compression_uncompressed_capacity 0.00MB
+site_id 
+site_name 
+parent_mdisk_grp_id 1
+parent_mdisk_grp_name Pool1
+child_mdisk_grp_count 0
+child_mdisk_grp_capacity 0.00MB
+type parent
+encrypt no
+owner_type none
+owner_id 
+owner_name 
+data_reduction no
+used_capacity_before_reduction 0.00MB
+used_capacity_after_reduction 0.00MB
+overhead_capacity 0.00MB
+deduplication_capacity_saving 0.00MB
+reclaimable_capacity 0.00MB
+physical_capacity 32.09TB
+physical_free_capacity 20.65TB
+shared_resources no
+vdisk_protection_enabled yes
+vdisk_protection_status active
+easy_tier_fcm_over_allocation_max 100%
+auto_expand no
+auto_expand_max_capacity 0.00MB
+safeguarded no
+provisioning_policy_id 
+provisioning_policy_name 
+replication_pool_link_uid 5A1FAC16FF9E5B9E5860E5EC6D48BBE6
+protection_vdisk_count 7
+protection_provisioned_capacity 21.00TB
+protection_written_capacity 5.23GB
+format_required no
+
+--- Output de 'lsvdisk QUORUM' ---
+id 1
+name QUORUM
+IO_group_id 0
+IO_group_name io_grp0
+status online
+mdisk_grp_id 1
+mdisk_grp_name Pool1
+capacity 1.00GB
+type striped
+formatted no
+formatting no
+mdisk_id 
+mdisk_name 
+FC_id 
+FC_name 
+RC_id 
+RC_name 
+vdisk_UID 600507638081083B6800000000000001
+preferred_node_id 1
+fast_write_state not_empty
+cache readwrite
+udid 
+fc_map_count 0
+sync_rate 50
+copy_count 1
+se_copy_count 1
+filesystem 
+mirror_write_priority latency
+RC_change no
+compressed_copy_count 0
+access_IO_group_count 1
+last_access_time 260806121914
+parent_mdisk_grp_id 1
+parent_mdisk_grp_name Pool1
+owner_type none
+owner_id 
+owner_name 
+encrypt no
+volume_id 1
+volume_name QUORUM
+function 
+throttle_id 
+throttle_name 
+IOPs_limit 
+bandwidth_limit_MB 
+volume_group_id 
+volume_group_name 
+cloud_backup_enabled no
+cloud_account_id 
+cloud_account_name 
+backup_status off
+last_backup_time 
+restore_status none
+backup_grain_size 
+deduplicated_copy_count 0
+protocol scsi
+changevolume1_id 
+preferred_node_name node1
+safeguarded_expiration_time 
+safeguarded_backup_count 0
+is_snapshot no
+snapshot_count 0
+volume_type 
+source_volume_id 
+source_volume_name 
+source_snapshot 
+source_snapshot_timestamp 
+protection_provisioned_capacity 0.00MB
+protection_written_capacity 0.00MB
+display_name 
+location1_volume_id 
+location2_volume_id 
+location3_volume_id 
+replication_mode 
+is_safeguarded_snapshot no
+safeguarded_snapshot_count 0
+restore_in_progress no
+internal_capacity 1.0GB
+
+copy_id 0
+status online
+sync yes
+auto_delete no
+primary yes
+mdisk_grp_id 1
+mdisk_grp_name Pool1
+type striped
+mdisk_id 
+mdisk_name 
+fast_write_state not_empty
+used_capacity 14.25MB
+real_capacity 36.48MB
+free_capacity 22.23MB
+overallocation 2807
+autoexpand on
+warning 80
+grainsize 256
+se_copy yes
+easy_tier on
+easy_tier_status balanced
+tier tier_scm
+tier_capacity 0.00MB
+tier tier0_flash
+tier_capacity 0.00MB
+tier tier1_flash
+tier_capacity 0.00MB
+tier tier_enterprise
+tier_capacity 0.00MB
+tier tier_nearline
+tier_capacity 36.48MB
+compressed_copy no
+uncompressed_used_capacity 14.25MB
+parent_mdisk_grp_id 1
+parent_mdisk_grp_name Pool1
+encrypt no
+deduplicated_copy no
+used_capacity_before_reduction 
+safeguarded_mdisk_grp_id 
+safeguarded_mdisk_grp_name 
+
+--- Output de 'lsvdisk VOL0' ---
+id 0
+name VOL0
+IO_group_id 0
+IO_group_name io_grp0
+status online
+mdisk_grp_id 0
+mdisk_grp_name Pool0
+capacity 3.05TB
+type striped
+formatted no
+formatting no
+mdisk_id 
+mdisk_name 
+FC_id 
+FC_name 
+RC_id 
+RC_name 
+vdisk_UID 600507638081083B6800000000000000
+preferred_node_id 2
+fast_write_state not_empty
+cache readwrite
+udid 
+fc_map_count 0
+sync_rate 50
+copy_count 1
+se_copy_count 1
+filesystem 
+mirror_write_priority latency
+RC_change no
+compressed_copy_count 0
+access_IO_group_count 1
+last_access_time 260806122219
+parent_mdisk_grp_id 0
+parent_mdisk_grp_name Pool0
+owner_type none
+owner_id 
+owner_name 
+encrypt no
+volume_id 0
+volume_name VOL0
+function 
+throttle_id 
+throttle_name 
+IOPs_limit 
+bandwidth_limit_MB 
+volume_group_id 0
+volume_group_name VG_Vol
+cloud_backup_enabled no
+cloud_account_id 
+cloud_account_name 
+backup_status off
+last_backup_time 
+restore_status none
+backup_grain_size 
+deduplicated_copy_count 0
+protocol scsi
+changevolume1_id 
+preferred_node_name node2
+safeguarded_expiration_time 
+safeguarded_backup_count 0
+is_snapshot no
+snapshot_count 7
+volume_type 
+source_volume_id 
+source_volume_name 
+source_snapshot 
+source_snapshot_timestamp 
+protection_provisioned_capacity 21.35TB
+protection_written_capacity 568.43GB
+display_name 
+location1_volume_id 
+location2_volume_id 
+location3_volume_id 
+replication_mode 
+is_safeguarded_snapshot no
+safeguarded_snapshot_count 0
+restore_in_progress no
+internal_capacity 3.1TB
+
+copy_id 0
+status online
+sync yes
+auto_delete no
+primary yes
+mdisk_grp_id 0
+mdisk_grp_name Pool0
+type striped
+mdisk_id 
+mdisk_name 
+fast_write_state not_empty
+used_capacity 1.54TB
+real_capacity 1.58TB
+free_capacity 41.46GB
+overallocation 193
+autoexpand on
+warning 80
+grainsize 256
+se_copy yes
+easy_tier on
+easy_tier_status balanced
+tier tier_scm
+tier_capacity 0.00MB
+tier tier0_flash
+tier_capacity 0.00MB
+tier tier1_flash
+tier_capacity 1.58TB
+tier tier_enterprise
+tier_capacity 0.00MB
+tier tier_nearline
+tier_capacity 0.00MB
+compressed_copy no
+uncompressed_used_capacity 1.54TB
+parent_mdisk_grp_id 0
+parent_mdisk_grp_name Pool0
+encrypt no
+deduplicated_copy no
+used_capacity_before_reduction 
+safeguarded_mdisk_grp_id 
+safeguarded_mdisk_grp_name 
+
+--- Output de 'lsvdisk VOL1' ---
+
+
+--- Output de 'lsvdisk VOL-BACKUP' ---
+id 2
+name VOL-BACKUP
+IO_group_id 0
+IO_group_name io_grp0
+status online
+mdisk_grp_id 1
+mdisk_grp_name Pool1
+capacity 10.00TB
+type striped
+formatted no
+formatting no
+mdisk_id 
+mdisk_name 
+FC_id 
+FC_name 
+RC_id 
+RC_name 
+vdisk_UID 600507638081083B680000000000000C
+preferred_node_id 2
+fast_write_state not_empty
+cache readwrite
+udid 
+fc_map_count 0
+sync_rate 50
+copy_count 1
+se_copy_count 1
+filesystem 
+mirror_write_priority latency
+RC_change no
+compressed_copy_count 0
+access_IO_group_count 1
+last_access_time 260806120714
+parent_mdisk_grp_id 1
+parent_mdisk_grp_name Pool1
+owner_type none
+owner_id 
+owner_name 
+encrypt no
+volume_id 2
+volume_name VOL-BACKUP
+function 
+throttle_id 
+throttle_name 
+IOPs_limit 
+bandwidth_limit_MB 
+volume_group_id 
+volume_group_name 
+cloud_backup_enabled no
+cloud_account_id 
+cloud_account_name 
+backup_status off
+last_backup_time 
+restore_status none
+backup_grain_size 
+deduplicated_copy_count 0
+protocol scsi
+changevolume1_id 
+preferred_node_name node2
+safeguarded_expiration_time 
+safeguarded_backup_count 0
+is_snapshot no
+snapshot_count 0
+volume_type 
+source_volume_id 
+source_volume_name 
+source_snapshot 
+source_snapshot_timestamp 
+protection_provisioned_capacity 0.00MB
+protection_written_capacity 0.00MB
+display_name 
+location1_volume_id 
+location2_volume_id 
+location3_volume_id 
+replication_mode 
+is_safeguarded_snapshot no
+safeguarded_snapshot_count 0
+restore_in_progress no
+internal_capacity 10.0TB
+
+copy_id 0
+status online
+sync yes
+auto_delete no
+primary yes
+mdisk_grp_id 1
+mdisk_grp_name Pool1
+type striped
+mdisk_id 
+mdisk_name 
+fast_write_state not_empty
+used_capacity 9.30TB
+real_capacity 9.32TB
+free_capacity 21.19GB
+overallocation 107
+autoexpand on
+warning 80
+grainsize 256
+se_copy yes
+easy_tier on
+easy_tier_status balanced
+tier tier_scm
+tier_capacity 0.00MB
+tier tier0_flash
+tier_capacity 0.00MB
+tier tier1_flash
+tier_capacity 0.00MB
+tier tier_enterprise
+tier_capacity 0.00MB
+tier tier_nearline
+tier_capacity 9.32TB
+compressed_copy no
+uncompressed_used_capacity 9.30TB
+parent_mdisk_grp_id 1
+parent_mdisk_grp_name Pool1
+encrypt no
+deduplicated_copy no
+used_capacity_before_reduction 
+safeguarded_mdisk_grp_id 
+safeguarded_mdisk_grp_name 
+
+
