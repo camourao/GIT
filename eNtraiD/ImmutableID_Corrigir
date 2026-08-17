@@ -1,0 +1,19 @@
+# Corrigir immutableId
+
+1 - Instalar o módulo de Entra ID (Azure AD):
+Install-Module MSOnline
+
+2 - Conectar no Entra ID:
+Connect-MsolService
+
+3 - Validar o ImmutableID do usuário no Entra ID:
+Get-Msoluser -UserPrincipalName adelev@tftecprime.cloud | Select-Object ImmutableId
+
+4 - Exportar o ImmutableId do usuário local:
+Get-ADUser adele | Select-Object UserPrincipalName, objectGUID, @{Name = 'ImmutableID'; Expression = { [system.convert]::ToBase64String(([GUID]$_.objectGUID).ToByteArray()) } 
+
+5 - Setar o ImmutableID coletado no ambiente local para o Entra ID (Hard Match)
+Set-MsolUser -UserPrincipalName adelev@tftecprime.cloud -ImmutableId Gnoqdfsdf8989Jv+Fg==
+
+# forçar a sincronização power shell
+Start-ADSyncSyncCycle -PolicyType Delta
