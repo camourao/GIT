@@ -6,24 +6,49 @@ $OU = "OU=Grupos Gerais,OU=CRN3,DC=crn3,DC=sp"
 # Lista de grupos com Nome, Descrição e E-mail
 $Grupos = @(
     @{ 
-        Name        = "gS_cAdastro_aSsinaturas"
-        Description = "Assinaturas Cadastro"
-        Email       = "noreply_cAdastro_assinaturas@crn3.org.br"
+        Name        = "gS_bAuru_aSsinaturas"
+        Description = "Assinaturas Bauru"
+        Email       = "noreply_bAuru_assinaturas@crn3.org.br"
     },
     @{ 
-        Name        = "gS_cAllcEnter_aSsinaturas"
-        Description = "Assinaturas CallCenter"
-        Email       = "noreply_callcenter_assinaturas@crn3.org.br"
+        Name        = "gS_cAmpinas_aSsinaturas"
+        Description = "Assinaturas Campinas"
+        Email       = "noreply_cAmpinas_assinaturas@crn3.org.br"
     },
     @{ 
-        Name        = "gS_cOmunicação & eVentos_aSsinaturas"
-        Description = "Assinaturas Comunicação & Eventos"
-        Email       = "noreply_comunicacao_eventos_assinaturas@crn3.org.br"
+        Name        = "gS_cAmpogRande_aSsinaturas"
+        Description = "Assinaturas Campo Grande"
+        Email       = "noreply_cAmpogRande_assinaturas@crn3.org.br"
     },
     @{ 
-        Name        = "gS_eTica_aSsinaturas"
-        Description = "Assinaturas Ética"
-        Email       = "noreply_etica_assinaturas@crn3.org.br"
+        Name        = "gS_pResidentepRudente_aSsinaturas"
+        Description = "Assinaturas Presidente Prudente"
+        Email       = "noreply_pResidentepRudente_assinaturas@crn3.org.br"
+    }
+    @{ 
+        Name        = "gS_rIbeiraopReto_aSsinaturas"
+        Description = "Assinaturas Ribeirão Preto"
+        Email       = "noreply_rIbeiraopReto_assinaturas@crn3.org.br"
+    }
+    @{ 
+        Name        = "gS_sAntos_aSsinaturas"
+        Description = "Assinaturas Santos"
+        Email       = "noreply_sAntos_assinaturas@crn3.org.br"
+    }
+    @{ 
+        Name        = "gS_sAojOsEdOrIopReto_aSsinaturas"
+        Description = "Assinaturas São José do Rio Preto"
+        Email       = "noreply_sAojOsEdOrIopReto_assinaturas@crn3.org.br"
+    }
+    @{ 
+        Name        = "gS_sAojOsedOscAmpos_aSsinaturas"
+        Description = "Assinaturas São José dos Campos"
+        Email       = "noreply_sAojOsedOscAmpos_assinaturas@crn3.org.br"
+    }
+    @{ 
+        Name        = "gS_sOrocaba_aSsinaturas"
+        Description = "Assinaturas Sorocaba"
+        Email       = "noreply_sOrocaba_assinaturas@crn3.org.br"
     }
 )
 
