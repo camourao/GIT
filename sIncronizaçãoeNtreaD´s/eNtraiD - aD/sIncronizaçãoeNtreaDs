@@ -1,0 +1,15 @@
+#sincronização entre ad´s 
+#comando força a sincronização entre os ad´s
+repadmin /syncall /A/e 
+
+#verificar resultado da sincronização
+repadmin /showrepl
+
+#enviar alterações para os outros DC´s
+repadmin /syncall /A/e/P
+
+#executar a verificação entre 2 DC´s especificos
+repadmin /syncall DC2 /A 
+
+#enviar alterações de um DC para outro DC
+repadmin /syncall DC2 /A/P 
