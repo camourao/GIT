@@ -1,16 +1,23 @@
 Import-Module ActiveDirectory
 
-$username = "Services T I"
+# =========================================================
+# LISTA DE USUÁRIOS (pode estar em OUs diferentes)
+# =========================================================
+$usernames = @(
+    "services_ti"
+    #"luis.andrade"
+    
+)
 
 # =========================================================
-# ALTERE AQUI OS DIAS E HORÁRIOS QUE DESEJA LIBERAR
+# CONFIGURAÇÃO DE DIAS E HORÁRIOS
 # =========================================================
-# Dias da semana (0 = Domingo, 1 = Segunda, 2 = Terça, 3 = Quarta, 4 = Quinta, 5 = Sexta, 6 = Sábado)
-$daysAllowed = @(1, 2, 3, 4, 5) # Ex: Segunda a Sexta. Para incluir Sábado, use: @(1, 2, 3, 4, 5, 6)
+# Dias (0 = Domingo, 1 = Segunda, ..., 6 = Sábado)
+$daysAllowed = @(1, 2, 3, 4, 5) 
 
-# Horário de início e término (formato 24h)
-$startHour = 8   # Ex: 8 para 08:00
-$endHour   = 18  # Ex: 18 para 18:00 (o script liberará até 17:59)
+# Horário (formato 24h)
+$startHour = 8   # 08:00
+$endHour   = 24  # Liberado até 16:59 (para liberar até 17:59, use 18)
 # =========================================================
 
 # 1. Cria a matriz de 168 horas zerada
@@ -45,5 +52,13 @@ for ($i = 0; $i -lt 168; $i++) {
     }
 }
 
-# 5. Aplica ao usuário
-Set-ADUser -Identity $username -Replace @{logonHours = $byteArray}
+# 5. Loop para aplicar a todos os usuários da lista
+foreach ($user in $usernames) {
+    try {
+        Set-ADUser -Identity $user -Replace @{logonHours = $byteArray} -ErrorAction Stop
+        Write-Host "Horário configurado com sucesso para: $user" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "Erro ao aplicar no usuário '$user': $_" -ForegroundColor Red
+    }
+}
