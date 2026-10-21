@@ -1,0 +1,15 @@
+Add vSwitches 
+
+New-VMSwitch -Name ConvergedSwitch -AllowManagementOS $false -NetAdapterName TEAM_LAN 
+
+Add-VMNetworkAdapter -ManagementOS -Name Switch01 -SwitchName ConvergedSwitch
+
+Add-VMNetworkAdapter -ManagementOS -Name UPDATE -SwitchName ConvergedSwitch 
+
+Remove-VMNetworkAdapter -ManagementOS -Name ABCDEF 
+
+New-NetIPAddress -Interfaceindex 56 -IPAddress 192.168.130.4 -PrefixLength 24 
+
+New-NetIPAddress -Interfaceindex 60 -IPAddress 192.168.130.14 -PrefixLength 24 
+
+Set-VMNetworkAdapterVlan -ManagementOS -VMNetworkAdapterName "Switch1" -Access -VlanId 1001

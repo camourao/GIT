@@ -3,7 +3,14 @@
 
 # Mapeamento para o caminho de rede UNC
 $LogPath  = "\\192.168.100.34\Share\TI\Logs Veeam"
-$LogFile  = "$LogPath\idrac_full_$(Get-Date -Format yyyyMMdd).txt"
+
+# 1. Pede credencial para acessar o Servidor de Arquivos (192.168.100.34)
+Write-Host "Digite o usuário e senha com acesso ao COMPARTILHAMENTO DE REDE (192.168.100.34)..." -ForegroundColor Yellow
+$NetCred = Get-Credential
+
+if (-not (Get-PSDrive -Name "ShareLogs" -ErrorAction SilentlyContinue)) {
+    New-PSDrive -Name "ShareLogs" -PSProvider FileSystem -Root "\\192.168.100.34\Share" -Credential $NetCred | Out-Null
+}
 
 if (-not (Test-Path -Path $logPath)) {
     New-Item -ItemType Directory -Path $logPath -Force | Out-Null
@@ -12,7 +19,11 @@ if (-not (Test-Path -Path $logPath)) {
 $timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
 $logFile = Join-Path -Path $logPath -ChildPath "Relatorio_Veeam_$timestamp.txt"
 
-$report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credential) -ScriptBlock {
+# 2. Pede credencial para acessar o Servidor VEEAM (192.168.100.31)
+Write-Host "Digite o usuário e senha com acesso ao SERVIDOR VEEAM (192.168.100.31)..." -ForegroundColor Cyan
+$VeeamCred = Get-Credential
+
+$report = Invoke-Command -ComputerName "192.168.100.31" -Credential $VeeamCred -ScriptBlock {
     Import-Module Veeam.Backup.PowerShell -ErrorAction SilentlyContinue
     Add-PSSnapin VeeamPSSnapIn -ErrorAction SilentlyContinue
 
@@ -26,13 +37,11 @@ $report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credent
         $readBytes = 0
         $transferredBytes = 0
 
-        # 1. Leitura via propriedades globais da Session (Atenção ao atributo do SDK: TransferedSize)
         if ($session.Progress) {
             $readBytes = $session.Progress.ReadSize
             $transferredBytes = $session.Progress.TransferedSize
         }
 
-        # 2. Se TransferedSize for 0, percorre os TaskSessions no servidor local
         if ($transferredBytes -eq 0) {
             try {
                 $tasks = $session.GetTaskSessions()
@@ -45,7 +54,6 @@ $report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credent
             } catch {}
         }
 
-        # 3. Fallback para Backup Copy Jobs / Workers via parsing de logs
         if ($transferredBytes -eq 0 -and $session.Result -ne "Failed") {
             try {
                 $logs = $session.GetLogRecords()
@@ -64,8 +72,6 @@ $report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credent
             } catch {}
         }
 
-        # 4. Caso a sessão seja de sucesso e ainda assim traga 0 em Transferido,
-        # para relatórios em MB calcula a proporção real ou atribui o volume trabalhado
         if ($transferredBytes -eq 0 -and $readBytes -gt 0 -and $session.Result -eq "Success") {
             $transferredBytes = $readBytes
         }
@@ -85,8 +91,8 @@ $report = Invoke-Command -ComputerName "192.168.100.31" -Credential (Get-Credent
 # Exibe o resultado no console
 Write-Host $report
 
-# Grava no arquivo com codificação UTF-8 no caminho de rede
-[System.IO.File]::WriteAllText($logFile, $report, [System.Text.Encoding]::UTF8)
+# Grava no arquivo com codificação UTF-8 utilizando o cmdlet nativo
+$report | Out-File -FilePath $logFile -Encoding utf8 -Force
 
 # Confirmação na tela
 if (Test-Path -Path $logFile) {
