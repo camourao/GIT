@@ -8,11 +8,7 @@
 # -----------------------------------
 $GrupoBloqueioIdentity = "GRP_Email_Restricted_Demais"
 $UsuariosExcecao       = @(
-    "cassia.machado@crn3.org.br",
-    "conceicao.veras@crn3.org.br",
-    "denise.silveira@crn3.org.br",
-    "franciele.brito@crn3.org.br",
-    "rejane.araujo@crn3.org.br"
+    "theo.endo@crn3.org.br"
 )
 
 # -----------------------------------
